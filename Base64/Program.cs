@@ -38,21 +38,15 @@ static Bitmap BytestoPNG(byte[] bytes, int width, int height)
 {
     Bitmap bitmap = new Bitmap(width, height);
     int index = 0;
-    for (int y = 0; y < bitmap.Height; y++)
+    for(int i = 0; i < bytes.Length; i += 4)
     {
-        for (int x = 0; x < bitmap.Width; x++)
-        {
-            if ((x * y)%3 == 0 && (x*y) != (width*height)-3)
-            {
-                index += 3;
-            }
-            bitmap.SetPixel (
-                x,
-                y,
-                Color.FromArgb(bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3])
-            );
-        }
+        Color pixel = Color.FromArgb(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+        int x = index % width;
+        int y = index / width;
+        bitmap.SetPixel(x, y, pixel);
+        index++;
     }
+
     return bitmap;
 }
 
